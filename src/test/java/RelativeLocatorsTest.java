@@ -16,7 +16,7 @@ public class RelativeLocatorsTest {
 
 		webDriver.manage().window().maximize();
 		webDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
-		// Thread.sleep only meant for demos!
+		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(5000);
 		WebElement element = webDriver.findElement(withTagName("li")
 				.toLeftOf(By.id("boston"))
@@ -29,11 +29,13 @@ public class RelativeLocatorsTest {
 
 	public void blur(JavascriptExecutor jsExecutor, WebElement webElement) throws InterruptedException {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(8px)'", webElement);
+		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(3000);
 	}
 
 	public void unblur(JavascriptExecutor jsExecutor, WebElement webElement) throws InterruptedException {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(0px)'", webElement);
+		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(3000);
 	}
 }
