@@ -58,13 +58,13 @@ public class CDPTest {
 
 		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 
 		// Disabling network interception and reloading the site
 		devTools.send(Network.disable());
 		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 	}
 
 	@Test
