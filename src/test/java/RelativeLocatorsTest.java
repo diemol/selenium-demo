@@ -30,12 +30,12 @@ public class RelativeLocatorsTest {
 	public void blur(JavascriptExecutor jsExecutor, WebElement webElement) throws InterruptedException {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(8px)'", webElement);
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 	}
 
 	public void unblur(JavascriptExecutor jsExecutor, WebElement webElement) throws InterruptedException {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(0px)'", webElement);
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 	}
 }
