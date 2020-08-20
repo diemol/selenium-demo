@@ -75,7 +75,7 @@ public class CDPTest {
 
 		devTools.send(enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
-		devTools.send(setExtraHTTPHeaders(new Headers(ImmutableMap.of("conference", "SauceCon2020"))));
+		devTools.send(setExtraHTTPHeaders(new Headers(ImmutableMap.of("meetup", "TestingUY"))));
 
 		devTools.addListener(loadingFailed(), loadingFailed -> {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET)) {
@@ -85,7 +85,7 @@ public class CDPTest {
 
 		devTools.addListener(requestWillBeSent(),
 				requestWillBeSent ->
-						assertEquals(requestWillBeSent.getRequest().getHeaders().get("conference"), "SauceCon2020"));
+						assertEquals(requestWillBeSent.getRequest().getHeaders().get("meetup"), "TestingUY"));
 
 		devTools.addListener(dataReceived(),
 				dataReceived -> Assert.assertNotNull(dataReceived.getRequestId()));
@@ -97,7 +97,7 @@ public class CDPTest {
 
 	@Test
 	public void getPageScreenshot() throws IOException {
-		chromeDriver.get("https://www.saucelabs.com/");
+		chromeDriver.get("https://opensource.saucelabs.com/");
 		Map<String, Object> result = chromeDriver.executeCdpCommand("Page.captureScreenshot", new HashMap<>());
 		String data = (String) result.get("data");
 		byte[] image = Base64.getDecoder().decode((data));
@@ -106,7 +106,7 @@ public class CDPTest {
 
 	@Test
 	public void getFullPageScreenshot() throws IOException {
-		chromeDriver.get("https://www.saucelabs.com/");
+		chromeDriver.get("https://opensource.saucelabs.com/");
 		long width = (long) chromeDriver.executeScript("return document.body.scrollWidth");
 		long height = (long) chromeDriver.executeScript("return document.body.scrollHeight");
 		long scale = (long) chromeDriver.executeScript("return window.devicePixelRatio");
@@ -127,11 +127,11 @@ public class CDPTest {
 	@Test
 	public void emulateTimezoneTest() throws InterruptedException {
 		Map<String, Object> timezoneInfo = new HashMap<>();
-		timezoneInfo.put("timezoneId", "Antarctica/Casey");
+		timezoneInfo.put("timezoneId", "America/Montevideo");
 
 		devTools.send(enable(of(100000000), empty(), empty()));
 		chromeDriver.executeCdpCommand("Emulation.setTimezoneOverride", timezoneInfo);
-		chromeDriver.get("https://browserspy.dk/date.php");
+		chromeDriver.get("https://everytimezone.com/");
 
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(20000);
