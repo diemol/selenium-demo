@@ -1,3 +1,5 @@
+package com.saucelabs.demo;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Assert;
@@ -5,11 +7,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.network.Network;
-import org.openqa.selenium.devtools.network.model.BlockedReason;
-import org.openqa.selenium.devtools.network.model.Headers;
-import org.openqa.selenium.devtools.network.model.ResourceType;
+import org.openqa.selenium.devtools.v87.network.Network;
+import org.openqa.selenium.devtools.v87.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v87.network.model.Headers;
+import org.openqa.selenium.devtools.v87.network.model.ResourceType;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,17 +20,8 @@ import java.nio.file.Files;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static org.junit.Assert.assertEquals;
-import static org.openqa.selenium.devtools.network.Network.dataReceived;
-import static org.openqa.selenium.devtools.network.Network.enable;
-import static org.openqa.selenium.devtools.network.Network.loadingFailed;
-import static org.openqa.selenium.devtools.network.Network.requestWillBeSent;
-import static org.openqa.selenium.devtools.network.Network.setBlockedURLs;
-import static org.openqa.selenium.devtools.network.Network.setExtraHTTPHeaders;
 
 public class CDPTest {
 	private ChromeDriver chromeDriver;
@@ -43,16 +37,17 @@ public class CDPTest {
 	@Test
 	public void blockUrls() throws InterruptedException {
 		// Network enabled
-		devTools.send(enable(empty(), empty(), empty()));
+		devTools.send(new Command<>("Network.enable", ImmutableMap.of()));
 
 		// Block urls that have png and css
-		devTools.send(setBlockedURLs(ImmutableList.of("*.css", "*.png")));
+		devTools.send(Network.setBlockedURLs(ImmutableList.of("*.css", "*.png")));
 
-		// Listening to events and check that the urls are actually blocked
+    // Listening to events and check that the urls are actually blocked
 		devTools.addListener(Network.loadingFailed(), loadingFailed -> {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET) ||
-				loadingFailed.getType().equals(ResourceType.IMAGE)) {
-				assertEquals(loadingFailed.getBlockedReason(), BlockedReason.INSPECTOR);
+          loadingFailed.getType().equals(ResourceType.IMAGE)) {
+        BlockedReason blockedReason = loadingFailed.getBlockedReason().orElse(null);
+        assertEquals(blockedReason, BlockedReason.INSPECTOR);
 			}
 		});
 
@@ -73,21 +68,24 @@ public class CDPTest {
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(10000);
 
-		devTools.send(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+    devTools.send(new Command<>("Network.enable", ImmutableMap.of()));
 
-		devTools.send(setExtraHTTPHeaders(new Headers(ImmutableMap.of("meetup", "TestingUY"))));
+		devTools.send(Network.setExtraHTTPHeaders(
+			new Headers(ImmutableMap.of("conference", "VLCTesting20"))));
 
-		devTools.addListener(loadingFailed(), loadingFailed -> {
+		devTools.addListener(Network.loadingFailed(), loadingFailed -> {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET)) {
-				assertEquals(loadingFailed.getBlockedReason(), BlockedReason.INSPECTOR);
+        BlockedReason blockedReason = loadingFailed.getBlockedReason().orElse(null);
+				assertEquals(blockedReason, BlockedReason.INSPECTOR);
 			}
 		});
 
-		devTools.addListener(requestWillBeSent(),
+		devTools.addListener(Network.requestWillBeSent(),
 				requestWillBeSent ->
-						assertEquals(requestWillBeSent.getRequest().getHeaders().get("meetup"), "TestingUY"));
+						assertEquals(
+							requestWillBeSent.getRequest().getHeaders().get("conference"), "VLCTesting20"));
 
-		devTools.addListener(dataReceived(),
+		devTools.addListener(Network.dataReceived(),
 				dataReceived -> Assert.assertNotNull(dataReceived.getRequestId()));
 
 		chromeDriver.get("https://manytools.org/http-html-text/http-request-headers/");
@@ -98,7 +96,8 @@ public class CDPTest {
 	@Test
 	public void getPageScreenshot() throws IOException {
 		chromeDriver.get("https://opensource.saucelabs.com/");
-		Map<String, Object> result = chromeDriver.executeCdpCommand("Page.captureScreenshot", new HashMap<>());
+		Map<String, Object> result =
+			chromeDriver.executeCdpCommand("Page.captureScreenshot", new HashMap<>());
 		String data = (String) result.get("data");
 		byte[] image = Base64.getDecoder().decode((data));
 		Files.write(new File("screenshotFileName.png").toPath(), image);
@@ -116,9 +115,11 @@ public class CDPTest {
 		setDeviceMetricsOverride.put("mobile", false);
 		setDeviceMetricsOverride.put("width", width);
 		setDeviceMetricsOverride.put("height", height);
-		chromeDriver.executeCdpCommand("Emulation.setDeviceMetricsOverride", setDeviceMetricsOverride);
+		chromeDriver.executeCdpCommand(
+			"Emulation.setDeviceMetricsOverride", setDeviceMetricsOverride);
 
-		Map<String, Object> result = chromeDriver.executeCdpCommand("Page.captureScreenshot", new HashMap<>());
+		Map<String, Object> result =
+			chromeDriver.executeCdpCommand("Page.captureScreenshot", new HashMap<>());
 		String data = (String) result.get("data");
 		byte[] image = Base64.getDecoder().decode((data));
 		Files.write(new File("fullPageScreenshotFileName.png").toPath(), image);
@@ -129,7 +130,7 @@ public class CDPTest {
 		Map<String, Object> timezoneInfo = new HashMap<>();
 		timezoneInfo.put("timezoneId", "America/Montevideo");
 
-		devTools.send(enable(of(100000000), empty(), empty()));
+		devTools.send(new Command<>("Network.enable", ImmutableMap.of()));
 		chromeDriver.executeCdpCommand("Emulation.setTimezoneOverride", timezoneInfo);
 		chromeDriver.get("https://everytimezone.com/");
 
