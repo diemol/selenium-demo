@@ -2,6 +2,8 @@ package com.saucelabs.demo;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.net.MediaType;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +15,16 @@ import org.openqa.selenium.devtools.v87.network.Network;
 import org.openqa.selenium.devtools.v87.network.model.BlockedReason;
 import org.openqa.selenium.devtools.v87.network.model.Headers;
 import org.openqa.selenium.devtools.v87.network.model.ResourceType;
+import org.openqa.selenium.remote.http.Contents;
+import org.openqa.selenium.remote.http.HttpResponse;
+import org.openqa.selenium.remote.http.Route;
+import org.openqa.selenium.support.devtools.NetworkInterceptor;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -136,6 +144,25 @@ public class CDPTest {
 
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(20000);
+	}
+
+	@SuppressWarnings("UnstableApiUsage")
+	@Test
+	public void replaceContent() throws IOException, InterruptedException {
+		Path path = Paths.get("src/test/resources/sl-holidays-bot.png");
+		byte[] bytes = Files.readAllBytes(path);
+
+		Route route = Route.matching(req -> req.toString().contains("png"))
+			.to(() -> req -> new HttpResponse()
+				.addHeader("Content-Type", MediaType.PNG.toString())
+				.setContent(Contents.bytes(bytes)));
+
+		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+		Thread.sleep(10000);
+		try (NetworkInterceptor interceptor = new NetworkInterceptor(chromeDriver, route)) {
+			chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+		}
+		Thread.sleep(10000);
 	}
 
 	@AfterEach
