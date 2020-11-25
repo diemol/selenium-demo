@@ -13,13 +13,30 @@ import java.net.URL;
 public class GridTest {
 
 /*
-Start socat
+# Start socat
 socat -4 TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
-Start the Grid (on the src/test/resources path)
+# Start the Grid (on the src/test/resources path)
 docker run --rm -ti --name selenium-docker -p 4444:4444 \
     -v ${PWD}/config.toml:/opt/bin/config.toml \
     -v ${PWD}/assets:/opt/selenium/assets \
     selenium/standalone-docker:4.0.0-alpha-7-20201119
+
+# Tracing
+java -DJAEGER_SERVICE_NAME="selenium-standalone" \
+     -DJAEGER_AGENT_HOST=localhost \
+     -DJAEGER_AGENT_PORT=14250 \
+     -jar selenium-server-4.0.0-alpha-7-f89bec1f87.jar \
+     --ext $(coursier fetch -p \
+        io.opentelemetry:opentelemetry-exporters-jaeger:0.9.1 \
+        io.grpc:grpc-netty:1.32.1) \
+     standalone
+
+docker run --rm -it --name jaeger \
+  -p 16686:16686 \
+  -p 14250:14250 \
+  jaegertracing/all-in-one:1.19.2
+
+http://localhost:16686/
  */
 
   @Test
