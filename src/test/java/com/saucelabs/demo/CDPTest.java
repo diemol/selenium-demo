@@ -98,7 +98,7 @@ public class CDPTest {
 
 		chromeDriver.get("https://manytools.org/http-html-text/http-request-headers/");
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(20000);
+		Thread.sleep(10000);
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class CDPTest {
 		chromeDriver.get("https://everytimezone.com/");
 
 		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(20000);
+		Thread.sleep(10000);
 	}
 
 	@SuppressWarnings("UnstableApiUsage")
@@ -158,11 +158,13 @@ public class CDPTest {
 				.setContent(Contents.bytes(bytes)));
 
 		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
-		Thread.sleep(10000);
-		try (NetworkInterceptor interceptor = new NetworkInterceptor(chromeDriver, route)) {
+		// Thread.sleep only meant for demo purposes!
+		Thread.sleep(5000);
+		try (NetworkInterceptor ignored = new NetworkInterceptor(chromeDriver, route)) {
 			chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
 		}
-		Thread.sleep(10000);
+		// Thread.sleep only meant for demo purposes!
+		Thread.sleep(5000);
 	}
 
 	@AfterEach
