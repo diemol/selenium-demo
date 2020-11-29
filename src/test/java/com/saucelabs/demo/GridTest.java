@@ -46,9 +46,7 @@ http://localhost:16686/
     options.setCapability("se:options", getSeOptions());
     RemoteWebDriver webDriver = new RemoteWebDriver(gridUrl, options);
     try {
-      webDriver.manage().window().maximize();
-      webDriver.get("https://time.is/");
-      Thread.sleep(5000);
+      navigate(webDriver);
     } finally {
       webDriver.quit();
     }
@@ -61,9 +59,7 @@ http://localhost:16686/
     options.setCapability("se:options", getSeOptions());
     RemoteWebDriver webDriver = new RemoteWebDriver(gridUrl, options);
     try {
-      webDriver.manage().window().maximize();
-      webDriver.get("https://time.is/");
-      Thread.sleep(5000);
+      navigate(webDriver);
     } finally {
       webDriver.quit();
     }
@@ -76,12 +72,24 @@ http://localhost:16686/
     options.setCapability("se:options", getSeOptions());
     RemoteWebDriver webDriver = new RemoteWebDriver(gridUrl, options);
     try {
-      webDriver.manage().window().maximize();
-      webDriver.get("https://time.is/");
-      Thread.sleep(5000);
+      navigate(webDriver);
     } finally {
       webDriver.quit();
     }
+  }
+
+  private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
+    webDriver.manage().window().maximize();
+    webDriver.get("https://time.is/");
+    Thread.sleep(5000);
+    webDriver.get("https://www.amazon.de/");
+    Thread.sleep(5000);
+    webDriver.get("https://www.airbnb.com/");
+    Thread.sleep(5000);
+    webDriver.get("https://www.saucelabs.com/");
+    Thread.sleep(5000);
+    webDriver.get("https://opensource.saucelabs.com/");
+    Thread.sleep(5000);
   }
 
   private MutableCapabilities getSeOptions() {
