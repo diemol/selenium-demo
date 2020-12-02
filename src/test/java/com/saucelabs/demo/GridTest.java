@@ -79,17 +79,18 @@ http://localhost:16686/
   }
 
   private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
+    long sleepLength = 2000;
     webDriver.manage().window().maximize();
     webDriver.get("https://time.is/");
-    Thread.sleep(5000);
+    Thread.sleep(sleepLength);
     webDriver.get("https://www.amazon.de/");
-    Thread.sleep(5000);
+    Thread.sleep(sleepLength);
     webDriver.get("https://www.airbnb.com/");
-    Thread.sleep(5000);
+    Thread.sleep(sleepLength);
     webDriver.get("https://www.saucelabs.com/");
-    Thread.sleep(5000);
+    Thread.sleep(sleepLength);
     webDriver.get("https://opensource.saucelabs.com/");
-    Thread.sleep(5000);
+    Thread.sleep(sleepLength);
   }
 
   private MutableCapabilities getSeOptions() {
