@@ -19,15 +19,15 @@ socat -4 TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 docker run --rm -ti --name selenium-docker -p 4444:4444 \
     -v ${PWD}/config.toml:/opt/bin/config.toml \
     -v ${PWD}/assets:/opt/selenium/assets \
-    selenium/standalone-docker:4.0.0-alpha-7-20201119
+    selenium/standalone-docker:4.0.0-beta-1-prerelease-20201202
 
 # Tracing
 java -DJAEGER_SERVICE_NAME="selenium-standalone" \
      -DJAEGER_AGENT_HOST=localhost \
      -DJAEGER_AGENT_PORT=14250 \
-     -jar selenium-server-4.0.0-alpha-7-f89bec1f87.jar \
+     -jar selenium-server-4.0.0-prerelease-beta-1-4610dcfb35.jar \
      --ext $(coursier fetch -p \
-        io.opentelemetry:opentelemetry-exporters-jaeger:0.9.1 \
+        io.opentelemetry:opentelemetry-exporters-jaeger:0.10.0 \
         io.grpc:grpc-netty:1.32.1) \
      standalone
 
