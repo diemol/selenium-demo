@@ -2,9 +2,9 @@
 # Configs have a mapping between the Docker image to use and the capabilities that need to be matched to
 # start a container with the given image.
 configs = [
-    "selenium/standalone-firefox:4.0.0-beta-1-prerelease-20201202", "{\"browserName\": \"firefox\"}",
-    "selenium/standalone-chrome:4.0.0-beta-1-prerelease-20201202", "{\"browserName\": \"chrome\"}",
-    "selenium/standalone-opera:4.0.0-beta-1-prerelease-20201202", "{\"browserName\": \"operablink\"}"
+    "selenium/standalone-firefox:4.0.0-beta-1-prerelease-20210114", "{\"browserName\": \"firefox\"}",
+    "selenium/standalone-chrome:4.0.0-beta-1-prerelease-20210114", "{\"browserName\": \"chrome\"}",
+    "selenium/standalone-opera:4.0.0-beta-1-prerelease-20210114", "{\"browserName\": \"operablink\"}"
 ]
 
 # URL for connecting to the docker daemon
@@ -14,10 +14,6 @@ configs = [
 # socat -4 TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 host = "tcp://host.docker.internal:2375"
 # Docker imagee used for video recording
-video-image = "selenium/video:ffmpeg-4.3.1-20201202"
+video-image = "selenium/video:ffmpeg-4.3.1-20210114"
 # Absolute path where test assets will be stored (this path must exist on the host)
 assets-path = "/Users/diegomolina/Projects/github.com/diemol/selenium-4-demo/src/test/resources/assets"
-# Absolute path where test assets will be stored inside the container
-# "/opt/selenium/assets" already exists inside the containers
-# If you want to use another one, be sure it exists.
-container-assets-path = "/opt/selenium/assets"
