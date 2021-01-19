@@ -27,7 +27,7 @@ java -DJAEGER_SERVICE_NAME="selenium-standalone" \
      -DJAEGER_AGENT_PORT=14250 \
      -jar selenium-server-4.0.0-prerelease-beta-1-02d5e641d5.jar \
      --ext $(coursier fetch -p \
-        io.opentelemetry:opentelemetry-exporters-jaeger:0.13.1 \
+        io.opentelemetry:opentelemetry-exporter-jaeger:0.13.1 \
         io.grpc:grpc-netty:1.33.1) \
       standalone
 
