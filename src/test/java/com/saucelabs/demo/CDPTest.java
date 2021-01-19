@@ -79,7 +79,7 @@ public class CDPTest {
     devTools.send(new Command<>("Network.enable", ImmutableMap.of()));
 
 		devTools.send(Network.setExtraHTTPHeaders(
-			new Headers(ImmutableMap.of("conference", "VLCTesting20"))));
+			new Headers(ImmutableMap.of("meetup", "STUGRM"))));
 
 		devTools.addListener(Network.loadingFailed(), loadingFailed -> {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET)) {
@@ -91,7 +91,7 @@ public class CDPTest {
 		devTools.addListener(Network.requestWillBeSent(),
 				requestWillBeSent ->
 						assertEquals(
-							requestWillBeSent.getRequest().getHeaders().get("conference"), "VLCTesting20"));
+							requestWillBeSent.getRequest().getHeaders().get("meetup"), "STUGRM"));
 
 		devTools.addListener(Network.dataReceived(),
 				dataReceived -> Assert.assertNotNull(dataReceived.getRequestId()));

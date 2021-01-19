@@ -15,5 +15,3 @@ configs = [
 host = "tcp://host.docker.internal:2375"
 # Docker imagee used for video recording
 video-image = "selenium/video:ffmpeg-4.3.1-20210114"
-# Absolute path where test assets will be stored (this path must exist on the host)
-assets-path = "/Users/diegomolina/Projects/github.com/diemol/selenium-4-demo/src/test/resources/assets"

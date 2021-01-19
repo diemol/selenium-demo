@@ -79,7 +79,7 @@ http://localhost:16686/
   }
 
   private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
-    long sleepLength = 2000;
+    long sleepLength = 500;
     webDriver.manage().window().maximize();
     webDriver.get("https://time.is/");
     Thread.sleep(sleepLength);
