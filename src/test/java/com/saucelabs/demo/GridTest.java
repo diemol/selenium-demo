@@ -18,7 +18,7 @@ socat -4 TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 docker run --rm -ti --name selenium-docker -p 4444:4444 \
     -v ${PWD}/config.toml:/opt/bin/config.toml \
     -v ${PWD}/assets:/opt/selenium/assets \
-    selenium/standalone-docker:4.0.0-beta-1-prerelease-20210114
+    selenium/standalone-docker:4.0.0-beta-4-20210608
 
 # Tracing
 java -DJAEGER_SERVICE_NAME="selenium-standalone" \

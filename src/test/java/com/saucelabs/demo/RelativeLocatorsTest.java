@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.safari.SafariDriver;
 
-import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
+import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
 public class RelativeLocatorsTest {
 
@@ -20,7 +20,7 @@ public class RelativeLocatorsTest {
 		webDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(5000);
-		WebElement element = webDriver.findElement(withTagName("li")
+		WebElement element = webDriver.findElement(with(By.tagName("li"))
 				.toLeftOf(By.id("boston"))
 				.below(By.id("warsaw")));
 		blur(jsExecutor, element);
