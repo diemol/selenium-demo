@@ -9,9 +9,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v91.network.Network;
-import org.openqa.selenium.devtools.v91.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v91.network.model.ResourceType;
+import org.openqa.selenium.devtools.v93.network.Network;
+import org.openqa.selenium.devtools.v93.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v93.network.model.ResourceType;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
