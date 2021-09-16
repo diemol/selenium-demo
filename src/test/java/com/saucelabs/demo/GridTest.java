@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,9 +46,9 @@ public class GridTest {
   }
 
   @Test
-  public void ieTest() throws MalformedURLException, InterruptedException {
+  public void safariTest() throws MalformedURLException, InterruptedException {
     URL gridUrl = new URL("http://localhost:4444");
-    RemoteWebDriver webDriver = new RemoteWebDriver(gridUrl, new InternetExplorerOptions());
+    RemoteWebDriver webDriver = new RemoteWebDriver(gridUrl, new SafariOptions());
     try {
       navigate(webDriver);
     } finally {
@@ -57,7 +57,7 @@ public class GridTest {
   }
 
   private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
-    long sleepLength = 2000;
+    long sleepLength = 5000;
     webDriver.manage().window().maximize();
     webDriver.get("https://www.selenium.dev/");
     Thread.sleep(sleepLength);
