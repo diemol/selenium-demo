@@ -21,10 +21,10 @@ import java.util.concurrent.TimeoutException;
 
 public class DynamicGridTest {
 
-  private final int nTests = 4;
-  private final String gridUrl =  "http://192.168.1.8:4444";
+  private final int nTests = 2;
+  private final String gridUrl =  "http://localhost:4444";
   private final ExecutorService executor =
-    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 5);
 
   @Test
   public void chromeTest()
@@ -49,7 +49,7 @@ public class DynamicGridTest {
         }
       });
     }
-    CompletableFuture.allOf(futures).get(4, MINUTES);
+    CompletableFuture.allOf(futures).get(6, MINUTES);
   }
 
   @Test
@@ -108,6 +108,7 @@ public class DynamicGridTest {
     options.setCapability("se:recordVideo", true);
     options.setCapability("se:timeZone", "US/Pacific");
     options.setCapability("se:screenResolution", "1920x1080");
+    options.setCapability("se:name", "Sample Test");
     return options;
   }
 
