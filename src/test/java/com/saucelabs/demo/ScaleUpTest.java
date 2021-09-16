@@ -18,10 +18,10 @@ import java.util.concurrent.TimeoutException;
 
 public class ScaleUpTest {
 
-  private final int nTests = 2;
+  private final int nTests = 100;
   private final String gridUrl =  "http://localhost:4444";
   private final ExecutorService executor =
-    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 5);
+    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 9);
 
   @Test
   public void chromeTest()
@@ -34,10 +34,13 @@ public class ScaleUpTest {
       executor.submit(() -> {
         try {
           WebDriver driver = new RemoteWebDriver(gridUrl, new ChromeOptions());
-          driver.get("https://www.saucedemo.com");
-          driver.findElement(By.tagName("body"));
+          long sleepLength = 20000;
+          driver.get("https://www.selenium.dev/");
           // For demo purposes
-          Thread.sleep(5000);
+          Thread.sleep(sleepLength);
+          driver.get("https://opensource.saucelabs.com/");
+          // For demo purposes
+          Thread.sleep(sleepLength);
           // And now quit
           driver.quit();
           future.complete(true);
