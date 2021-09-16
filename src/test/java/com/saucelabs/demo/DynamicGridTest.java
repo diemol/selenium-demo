@@ -31,13 +31,6 @@ public class DynamicGridTest {
     }
   }
 
-  private void navigate(RemoteWebDriver driver) throws InterruptedException {
-    driver.get("https://www.saucedemo.com");
-    driver.findElement(By.tagName("body"));
-    // For demo purposes
-    Thread.sleep(5000);
-  }
-
   @Test
   public void firefoxTest() throws MalformedURLException, InterruptedException {
     URL gridUrl = new URL(this.gridUrl);
@@ -58,6 +51,13 @@ public class DynamicGridTest {
     } finally {
       driver.quit();
     }
+  }
+
+  private void navigate(RemoteWebDriver driver) throws InterruptedException {
+    driver.get("https://www.saucedemo.com");
+    driver.findElement(By.tagName("body"));
+    // For demo purposes
+    Thread.sleep(5000);
   }
 
   private MutableCapabilities setOptions(MutableCapabilities options) {
