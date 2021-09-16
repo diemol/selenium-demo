@@ -1,6 +1,8 @@
 package com.saucelabs.demo;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -10,6 +12,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class GridTest {
 
   @Test
@@ -57,7 +60,7 @@ public class GridTest {
   }
 
   private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
-    long sleepLength = 5000;
+    long sleepLength = 10000;
     webDriver.manage().window().maximize();
     webDriver.get("https://www.selenium.dev/");
     Thread.sleep(sleepLength);
