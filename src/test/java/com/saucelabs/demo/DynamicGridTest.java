@@ -1,107 +1,63 @@
 package com.saucelabs.demo;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
-
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class DynamicGridTest {
 
-  private final int nTests = 2;
   private final String gridUrl =  "http://localhost:4444";
-  private final ExecutorService executor =
-    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 5);
 
   @Test
-  public void chromeTest()
-    throws MalformedURLException, InterruptedException, ExecutionException, TimeoutException {
+  public void chromeTest() throws MalformedURLException, InterruptedException {
     URL gridUrl = new URL(this.gridUrl);
-    CompletableFuture<?>[] futures = new CompletableFuture<?>[nTests];
-    for (int i = 0; i < futures.length; i++) {
-      CompletableFuture<Object> future = new CompletableFuture<>();
-      futures[i] = future;
-      executor.submit(() -> {
-        try {
-          WebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new ChromeOptions()));
-          driver.get("https://www.saucedemo.com");
-          driver.findElement(By.tagName("body"));
-          // For demo purposes
-          Thread.sleep(5000);
-          // And now quit
-          driver.quit();
-          future.complete(true);
-        } catch (Exception e) {
-          future.completeExceptionally(e);
-        }
-      });
+    RemoteWebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new ChromeOptions()));
+    try {
+      navigate(driver);
+    } finally {
+      driver.quit();
     }
-    CompletableFuture.allOf(futures).get(6, MINUTES);
+  }
+
+  private void navigate(RemoteWebDriver driver) throws InterruptedException {
+    driver.get("https://www.saucedemo.com");
+    driver.findElement(By.tagName("body"));
+    // For demo purposes
+    Thread.sleep(5000);
   }
 
   @Test
-  public void firefoxTest()
-    throws MalformedURLException, InterruptedException, ExecutionException, TimeoutException {
+  public void firefoxTest() throws MalformedURLException, InterruptedException {
     URL gridUrl = new URL(this.gridUrl);
-    CompletableFuture<?>[] futures = new CompletableFuture<?>[nTests];
-    for (int i = 0; i < futures.length; i++) {
-      CompletableFuture<Object> future = new CompletableFuture<>();
-      futures[i] = future;
-      executor.submit(() -> {
-        try {
-          WebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new FirefoxOptions()));
-          driver.get("https://www.saucedemo.com");
-          driver.findElement(By.tagName("body"));
-          // For demo purposes
-          Thread.sleep(5000);
-          // And now quit
-          driver.quit();
-          future.complete(true);
-        } catch (Exception e) {
-          future.completeExceptionally(e);
-        }
-      });
+    RemoteWebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new FirefoxOptions()));
+    try {
+      navigate(driver);
+    } finally {
+      driver.quit();
     }
-    CompletableFuture.allOf(futures).get(4, MINUTES);
   }
 
   @Test
-  public void edgeTest()
-    throws MalformedURLException, InterruptedException, ExecutionException, TimeoutException {
+  public void edgeTest() throws MalformedURLException, InterruptedException {
     URL gridUrl = new URL(this.gridUrl);
-    CompletableFuture<?>[] futures = new CompletableFuture<?>[nTests];
-    for (int i = 0; i < futures.length; i++) {
-      CompletableFuture<Object> future = new CompletableFuture<>();
-      futures[i] = future;
-      executor.submit(() -> {
-        try {
-          WebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new EdgeOptions()));
-          driver.get("https://www.saucedemo.com");
-          driver.findElement(By.tagName("body"));
-          // For demo purposes
-          Thread.sleep(5000);
-          // And now quit
-          driver.quit();
-          future.complete(true);
-        } catch (Exception e) {
-          future.completeExceptionally(e);
-        }
-      });
+    RemoteWebDriver driver = new RemoteWebDriver(gridUrl, setOptions(new EdgeOptions()));
+    try {
+      navigate(driver);
+    } finally {
+      driver.quit();
     }
-    CompletableFuture.allOf(futures).get(4, MINUTES);
   }
 
   private MutableCapabilities setOptions(MutableCapabilities options) {
@@ -109,6 +65,7 @@ public class DynamicGridTest {
     options.setCapability("se:timeZone", "US/Pacific");
     options.setCapability("se:screenResolution", "1920x1080");
     options.setCapability("se:name", "Sample Test");
+    options.setCapability(CapabilityType.PLATFORM_NAME, Platform.LINUX);
     return options;
   }
 
