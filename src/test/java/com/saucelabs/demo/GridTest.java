@@ -61,10 +61,11 @@ public class GridTest {
 
   private void navigate(RemoteWebDriver webDriver) throws InterruptedException {
     long sleepLength = 10000;
-    webDriver.manage().window().maximize();
     webDriver.get("https://www.selenium.dev/");
+    // For demo purposes
     Thread.sleep(sleepLength);
     webDriver.get("https://opensource.saucelabs.com/");
+    // For demo purposes
     Thread.sleep(sleepLength);
   }
 
