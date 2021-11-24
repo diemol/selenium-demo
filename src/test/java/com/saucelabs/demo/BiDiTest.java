@@ -4,21 +4,21 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v93.network.Network;
-import org.openqa.selenium.devtools.v93.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v93.network.model.Headers;
-import org.openqa.selenium.devtools.v93.network.model.ResourceType;
+import org.openqa.selenium.devtools.NetworkInterceptor;
+import org.openqa.selenium.devtools.v96.network.Network;
+import org.openqa.selenium.devtools.v96.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v96.network.model.Headers;
+import org.openqa.selenium.devtools.v96.network.model.ResourceType;
 import org.openqa.selenium.remote.http.Contents;
 import org.openqa.selenium.remote.http.HttpResponse;
 import org.openqa.selenium.remote.http.Route;
-import org.openqa.selenium.support.devtools.NetworkInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +29,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-
-public class CDPTest {
+public class BiDiTest {
 	private ChromeDriver chromeDriver;
 	private DevTools devTools;
 
@@ -55,7 +53,7 @@ public class CDPTest {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET) ||
           loadingFailed.getType().equals(ResourceType.IMAGE)) {
         BlockedReason blockedReason = loadingFailed.getBlockedReason().orElse(null);
-        assertEquals(blockedReason, BlockedReason.INSPECTOR);
+        Assertions.assertEquals(blockedReason, BlockedReason.INSPECTOR);
 			}
 		});
 
@@ -84,17 +82,17 @@ public class CDPTest {
 		devTools.addListener(Network.loadingFailed(), loadingFailed -> {
 			if (loadingFailed.getType().equals(ResourceType.STYLESHEET)) {
         BlockedReason blockedReason = loadingFailed.getBlockedReason().orElse(null);
-				assertEquals(blockedReason, BlockedReason.INSPECTOR);
+				Assertions.assertEquals(blockedReason, BlockedReason.INSPECTOR);
 			}
 		});
 
 		devTools.addListener(Network.requestWillBeSent(),
 				requestWillBeSent ->
-						assertEquals(
+						Assertions.assertEquals(
 							requestWillBeSent.getRequest().getHeaders().get("meetup"), "STUGRM"));
 
 		devTools.addListener(Network.dataReceived(),
-				dataReceived -> Assert.assertNotNull(dataReceived.getRequestId()));
+				dataReceived -> Assertions.assertNotNull(dataReceived.getRequestId()));
 
 		chromeDriver.get("https://manytools.org/http-html-text/http-request-headers/");
 		// Thread.sleep only meant for demo purposes!
