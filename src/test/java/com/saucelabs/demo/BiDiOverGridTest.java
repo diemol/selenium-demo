@@ -1,26 +1,24 @@
 package com.saucelabs.demo;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v93.network.Network;
-import org.openqa.selenium.devtools.v93.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v93.network.model.ResourceType;
+import org.openqa.selenium.devtools.v96.network.Network;
+import org.openqa.selenium.devtools.v96.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v96.network.model.ResourceType;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-
-public class CDPOverGridTest {
+public class BiDiOverGridTest {
 
 	@Test
 	public void blockUrls() throws InterruptedException, MalformedURLException {
@@ -35,7 +33,7 @@ public class CDPOverGridTest {
 		try (DevTools devTools = ((HasDevTools) webDriver).getDevTools()) {
 			devTools.createSessionIfThereIsNotOne();
 			// Network enabled
-			devTools.send(new Command<>("Network.enable", ImmutableMap.of()));
+			devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
 			// Block urls that have png and css
 			devTools.send(Network.setBlockedURLs(ImmutableList.of("*.css", "*.png")));
@@ -45,7 +43,7 @@ public class CDPOverGridTest {
 				if (loadingFailed.getType().equals(ResourceType.STYLESHEET) ||
 						loadingFailed.getType().equals(ResourceType.IMAGE)) {
 					BlockedReason blockedReason = loadingFailed.getBlockedReason().orElse(null);
-					assertEquals(blockedReason, BlockedReason.INSPECTOR);
+					Assertions.assertEquals(blockedReason, BlockedReason.INSPECTOR);
 				}
 			});
 
