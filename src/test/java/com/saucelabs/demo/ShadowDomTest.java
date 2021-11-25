@@ -1,5 +1,7 @@
 package com.saucelabs.demo;
 
+import static com.saucelabs.demo.Configuration.MY_TODO_APP_URL;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +31,7 @@ public class ShadowDomTest {
 
   @Test
   public void checkAppNameInShadowDom() {
-    driver.get("http://localhost:3000");
+    driver.get(MY_TODO_APP_URL);
 
     WebElement appName = driver.findElement(By.tagName("app-name"));
 

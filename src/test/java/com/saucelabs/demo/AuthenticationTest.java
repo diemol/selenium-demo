@@ -1,5 +1,7 @@
 package com.saucelabs.demo;
 
+import static com.saucelabs.demo.Configuration.MY_TODO_APP_URL;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +29,7 @@ public class AuthenticationTest {
   public void authenticate() {
     ((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
 
-    driver.get("http://localhost:3000");
+    driver.get(MY_TODO_APP_URL);
 
     Assertions.assertEquals("My visual ToDo App", driver.getTitle());
   }

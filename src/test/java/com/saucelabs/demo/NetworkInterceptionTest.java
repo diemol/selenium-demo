@@ -1,5 +1,7 @@
 package com.saucelabs.demo;
 
+import static com.saucelabs.demo.Configuration.MY_TODO_APP_URL;
+import static com.saucelabs.demo.Configuration.sleepTight;
 import static org.openqa.selenium.remote.http.HttpMethod.DELETE;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
@@ -41,11 +43,11 @@ import java.util.List;
 
 public class NetworkInterceptionTest {
 
-  private static URL appUrl;
+  private static URL APP_URL;
 
   static {
     try {
-      appUrl = new URL("http://localhost:3000");
+      APP_URL = new URL(MY_TODO_APP_URL);
     } catch (MalformedURLException ignore) {
       // fall off
     }
@@ -59,9 +61,9 @@ public class NetworkInterceptionTest {
     ClientConfig clientConfig = ClientConfig
       .defaultConfig()
       .authenticateAs(new UsernameAndPassword("admin", "admin"))
-      .baseUrl(appUrl);
+      .baseUrl(APP_URL);
     HttpClient client = HttpClient.Factory.createDefault().createClient(clientConfig);
-    HttpResponse response = client.execute(new HttpRequest(DELETE, appUrl.toString() + "/items"));
+    HttpResponse response = client.execute(new HttpRequest(DELETE, APP_URL.toString() + "/items"));
     Assertions.assertEquals(200, response.getStatus());
     driver = new ChromeDriver();
     ((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
@@ -76,7 +78,7 @@ public class NetworkInterceptionTest {
   @Test
   public void addItem() {
     String item = "Comprar pan";
-    driver.get("http://localhost:3000");
+    driver.get(APP_URL.toString());
 
     String inputFieldLocator = "input[data-testid='new-item-text']";
     WebElement inputField = wait.until(presenceOfElementLocated(By.cssSelector(inputFieldLocator)));
@@ -88,6 +90,8 @@ public class NetworkInterceptionTest {
     List<WebElement> addedItem = wait.until(presenceOfAllElementsLocatedBy(By.cssSelector(itemLocator)));
 
     Assertions.assertEquals(1, addedItem.size());
+
+    sleepTight(3000);
   }
 
   @Test
@@ -102,7 +106,7 @@ public class NetworkInterceptionTest {
         .setContent(Contents.bytes(sauceBotImage)));
 
     try (NetworkInterceptor ignore = new NetworkInterceptor(driver, replaceImage)) {
-      driver.get("http://localhost:3000");
+      driver.get(APP_URL.toString());
 
       String inputFieldLocator = "input[data-testid='new-item-text']";
       WebElement inputField = wait.until(presenceOfElementLocated(By.cssSelector(inputFieldLocator)));
@@ -115,11 +119,14 @@ public class NetworkInterceptionTest {
 
       Assertions.assertEquals(1, addedItem.size());
     }
+
+    sleepTight(4000);
   }
 
   @Test
   void addItemReplacingResponse() {
     String item = "Limpiar los baños";
+    String mockedItem = "Ir al parque";
 
     Routable apiPost = Route
       .matching(req -> req.getUri().contains("items") && req.getMethod().equals(HttpMethod.POST))
@@ -129,11 +136,11 @@ public class NetworkInterceptionTest {
         .setContent(
           Contents.asJson(
             ImmutableMap.of("id", "f2a5514c-f451-43a6-825c-8753a2566d6e",
-                            "name", item,
+                            "name", mockedItem,
                             "completed", false))));
 
     try (NetworkInterceptor ignore = new NetworkInterceptor(driver, apiPost)) {
-      driver.get("http://localhost:3000");
+      driver.get(APP_URL.toString());
 
       String inputFieldLocator = "input[data-testid='new-item-text']";
       WebElement inputField = wait.until(presenceOfElementLocated(By.cssSelector(inputFieldLocator)));
@@ -141,10 +148,12 @@ public class NetworkInterceptionTest {
 
       driver.findElement(By.cssSelector("button[data-testid='new-item-button']")).click();
 
-      String itemLocator = String.format("div[data-testid='%s']", item);
+      String itemLocator = String.format("div[data-testid='%s']", mockedItem);
       List<WebElement> addedItem = wait.until(presenceOfAllElementsLocatedBy(By.cssSelector(itemLocator)));
 
       Assertions.assertEquals(1, addedItem.size());
     }
+
+    sleepTight(5000);
   }
 }

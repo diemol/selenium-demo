@@ -15,6 +15,8 @@ import org.openqa.selenium.remote.http.HttpClient;
 import org.openqa.selenium.remote.http.HttpRequest;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.saucelabs.demo.Configuration.MY_TODO_APP_URL;
+import static com.saucelabs.demo.Configuration.sleepTight;
 import static org.openqa.selenium.remote.http.HttpMethod.DELETE;
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
@@ -27,11 +29,11 @@ import java.util.List;
 
 public class RelativeLocatorsTest {
 
-	private static URL appUrl;
+	private static URL APP_URL;
 
 	static {
 		try {
-			appUrl = new URL("http://localhost:3000");
+			APP_URL = new URL(MY_TODO_APP_URL);
 		} catch (MalformedURLException ignore) {
 			// fall off
 		}
@@ -44,9 +46,9 @@ public class RelativeLocatorsTest {
 		ClientConfig clientConfig = ClientConfig
 			.defaultConfig()
 			.authenticateAs(new UsernameAndPassword("admin", "admin"))
-			.baseUrl(appUrl);
+			.baseUrl(APP_URL);
 		HttpClient client = HttpClient.Factory.createDefault().createClient(clientConfig);
-		client.execute(new HttpRequest(DELETE, appUrl.toString() + "/items"));
+		client.execute(new HttpRequest(DELETE, APP_URL.toString() + "/items"));
 		driver = new ChromeDriver();
 		((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -78,7 +80,7 @@ public class RelativeLocatorsTest {
 		String bottomItem = "Limpiar la mesa";
 
 		driver.manage().window().maximize();
-		driver.get("http://localhost:3000");
+		driver.get(APP_URL.toString());
 
 		addItem(driver, bottomItem);
 		addItem(driver, middleItem);
@@ -87,6 +89,8 @@ public class RelativeLocatorsTest {
 		driver.navigate().refresh();
 
 		String itemLocator = String.format("div[data-testid='%s']", middleItem);
+		wait.until(presenceOfAllElementsLocatedBy(By.cssSelector(itemLocator)));
+
 		WebElement above = driver.findElement(with(By.className("name"))
 																						.above(By.cssSelector(itemLocator)));
 		blur(jsExecutor, above);
@@ -125,12 +129,4 @@ public class RelativeLocatorsTest {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(0px)'", webElement);
 	}
 
-	private static void sleepTight(long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			throw new RuntimeException(e);
-		}
-	}
 }

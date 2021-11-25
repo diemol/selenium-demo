@@ -144,27 +144,6 @@ public class BiDiTest {
 		Thread.sleep(10000);
 	}
 
-	@SuppressWarnings("UnstableApiUsage")
-	@Test
-	public void replaceContent() throws IOException, InterruptedException {
-		Path path = Paths.get("src/test/resources/sl-holidays-bot.png");
-		byte[] bytes = Files.readAllBytes(path);
-
-		Route route = Route.matching(req -> req.toString().contains("png"))
-			.to(() -> req -> new HttpResponse()
-				.addHeader("Content-Type", MediaType.PNG.toString())
-				.setContent(Contents.bytes(bytes)));
-
-		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
-		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(5000);
-		try (NetworkInterceptor ignored = new NetworkInterceptor(chromeDriver, route)) {
-			chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
-		}
-		// Thread.sleep only meant for demo purposes!
-		Thread.sleep(5000);
-	}
-
 	@AfterEach
 	public void tearDown() {
 		chromeDriver.quit();
