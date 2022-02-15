@@ -43,12 +43,15 @@ public class RelativeLocatorsTest {
 
 	@BeforeEach
 	void createDriver() {
+		// Clear the list of items before running any test
 		ClientConfig clientConfig = ClientConfig
 			.defaultConfig()
 			.authenticateAs(new UsernameAndPassword("admin", "admin"))
 			.baseUrl(APP_URL);
 		HttpClient client = HttpClient.Factory.createDefault().createClient(clientConfig);
 		client.execute(new HttpRequest(DELETE, APP_URL.toString() + "/items"));
+
+		// Create the browser driver
 		driver = new ChromeDriver();
 		((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -61,6 +64,7 @@ public class RelativeLocatorsTest {
 		driver.manage().window().maximize();
 		driver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
 
+		// Sleep only meant for demo purposes!
 		sleepTight(5000);
 
 		WebElement element = driver.findElement(with(By.tagName("li"))
@@ -75,9 +79,9 @@ public class RelativeLocatorsTest {
 	@Test
 	public void locatingItemsByTheirRelativeLocation() {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-		String topItem = "Comprar queso";
-		String middleItem = "Comprar vino";
-		String bottomItem = "Limpiar la mesa";
+		String topItem = "Buy cheese";
+		String middleItem = "Buy wine";
+		String bottomItem = "Clean the table";
 
 		driver.manage().window().maximize();
 		driver.get(APP_URL.toString());
@@ -121,7 +125,7 @@ public class RelativeLocatorsTest {
 
 	public void blur(JavascriptExecutor jsExecutor, WebElement webElement) {
 		jsExecutor.executeScript("arguments[0].style.filter='blur(8px)'", webElement);
-		// Thread.sleep only meant for demo purposes!
+		// Sleep only meant for demo purposes!
 		sleepTight(5000);
 	}
 

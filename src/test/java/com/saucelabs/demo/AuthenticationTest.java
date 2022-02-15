@@ -1,6 +1,7 @@
 package com.saucelabs.demo;
 
 import static com.saucelabs.demo.Configuration.MY_TODO_APP_URL;
+import static com.saucelabs.demo.Configuration.sleepTight;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +31,9 @@ public class AuthenticationTest {
     ((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
 
     driver.get(MY_TODO_APP_URL);
+
+    // Sleep only meant for demo purposes!
+    sleepTight(3000);
 
     Assertions.assertEquals("My visual ToDo App", driver.getTitle());
   }

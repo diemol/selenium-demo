@@ -58,6 +58,7 @@ public class NetworkInterceptionTest {
 
   @BeforeEach
   void createSetup() {
+    // Clear the list of items before running any test
     ClientConfig clientConfig = ClientConfig
       .defaultConfig()
       .authenticateAs(new UsernameAndPassword("admin", "admin"))
@@ -65,6 +66,8 @@ public class NetworkInterceptionTest {
     HttpClient client = HttpClient.Factory.createDefault().createClient(clientConfig);
     HttpResponse response = client.execute(new HttpRequest(DELETE, APP_URL.toString() + "/items"));
     Assertions.assertEquals(200, response.getStatus());
+
+    // Create the browser driver
     driver = new ChromeDriver();
     ((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
     wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -77,7 +80,7 @@ public class NetworkInterceptionTest {
 
   @Test
   public void addItem() {
-    String item = "Comprar pan";
+    String item = "Buy bread";
     driver.get(APP_URL.toString());
 
     String inputFieldLocator = "input[data-testid='new-item-text']";
@@ -91,12 +94,13 @@ public class NetworkInterceptionTest {
 
     Assertions.assertEquals(1, addedItem.size());
 
+    // Sleep only meant for demo purposes!
     sleepTight(3000);
   }
 
   @Test
   void addItemReplacingImage() throws IOException {
-    String item = "Comprar arroz";
+    String item = "Buy rice";
     Path path = Paths.get("src/test/resources/sl-holidays-bot-450x200.png");
     byte[] sauceBotImage = Files.readAllBytes(path);
     Routable replaceImage = Route
@@ -120,13 +124,14 @@ public class NetworkInterceptionTest {
       Assertions.assertEquals(1, addedItem.size());
     }
 
+    // Sleep only meant for demo purposes!
     sleepTight(4000);
   }
 
   @Test
   void addItemReplacingResponse() {
-    String item = "Limpiar los baños";
-    String mockedItem = "Ir al parque";
+    String item = "Clean the bathroom";
+    String mockedItem = "Go to the park";
 
     Routable apiPost = Route
       .matching(req -> req.getUri().contains("items") && req.getMethod().equals(HttpMethod.POST))
@@ -146,6 +151,9 @@ public class NetworkInterceptionTest {
       WebElement inputField = wait.until(presenceOfElementLocated(By.cssSelector(inputFieldLocator)));
       inputField.sendKeys(item);
 
+      // Sleep only meant for demo purposes!
+      sleepTight(5000);
+
       driver.findElement(By.cssSelector("button[data-testid='new-item-button']")).click();
 
       String itemLocator = String.format("div[data-testid='%s']", mockedItem);
@@ -154,6 +162,7 @@ public class NetworkInterceptionTest {
       Assertions.assertEquals(1, addedItem.size());
     }
 
+    // Sleep only meant for demo purposes!
     sleepTight(5000);
   }
 }
