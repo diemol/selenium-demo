@@ -17,15 +17,14 @@ import java.util.concurrent.TimeoutException;
 
 public class ScaleUpTest {
 
-  private final int nTests = 100;
-  private final String gridUrl =  "http://localhost:4444";
   private final ExecutorService executor =
     Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 9);
 
   @Test
   public void chromeTest()
     throws MalformedURLException, InterruptedException, ExecutionException, TimeoutException {
-    URL gridUrl = new URL(this.gridUrl);
+    URL gridUrl = new URL("http://localhost:4444");
+    int nTests = 5;
     CompletableFuture<?>[] futures = new CompletableFuture<?>[nTests];
     for (int i = 0; i < futures.length; i++) {
       CompletableFuture<Object> future = new CompletableFuture<>();
