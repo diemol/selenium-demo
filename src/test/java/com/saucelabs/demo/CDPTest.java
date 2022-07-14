@@ -2,7 +2,6 @@ package com.saucelabs.demo;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.MediaType;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v99.network.Network;
-import org.openqa.selenium.devtools.v99.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v99.network.model.Headers;
-import org.openqa.selenium.devtools.v99.network.model.ResourceType;
+import org.openqa.selenium.devtools.v103.network.Network;
+import org.openqa.selenium.devtools.v103.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v103.network.model.Headers;
+import org.openqa.selenium.devtools.v103.network.model.ResourceType;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BiDiTest {
+public class CDPTest {
 	private ChromeDriver chromeDriver;
 	private DevTools devTools;
 

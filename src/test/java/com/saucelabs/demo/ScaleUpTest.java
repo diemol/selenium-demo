@@ -24,14 +24,14 @@ public class ScaleUpTest {
   public void chromeTest()
     throws MalformedURLException, InterruptedException, ExecutionException, TimeoutException {
     URL gridUrl = new URL("http://localhost:4444");
-    int nTests = 5;
+    int nTests = 20;
     CompletableFuture<?>[] futures = new CompletableFuture<?>[nTests];
     for (int i = 0; i < futures.length; i++) {
       CompletableFuture<Object> future = new CompletableFuture<>();
       futures[i] = future;
       executor.submit(() -> {
         try {
-          WebDriver driver = new RemoteWebDriver(gridUrl, new ChromeOptions());
+          WebDriver driver = new RemoteWebDriver(gridUrl, new ChromeOptions().setHeadless(true));
           long sleepLength = 20000;
           driver.get("https://www.selenium.dev/");
           // For demo purposes
@@ -47,7 +47,7 @@ public class ScaleUpTest {
         }
       });
     }
-    CompletableFuture.allOf(futures).get(6, MINUTES);
+    CompletableFuture.allOf(futures).get(15, MINUTES);
   }
 
 }
