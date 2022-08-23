@@ -54,7 +54,7 @@ public class RelativeLocatorsTest {
 		// Create the browser driver
 		driver = new ChromeDriver();
 		((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 	}
 
 	@Test

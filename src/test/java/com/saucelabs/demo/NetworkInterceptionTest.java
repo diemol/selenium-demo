@@ -70,7 +70,7 @@ public class NetworkInterceptionTest {
     // Create the browser driver
     driver = new ChromeDriver();
     ((HasAuthentication) driver).register(UsernameAndPassword.of("admin", "admin"));
-    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    wait = new WebDriverWait(driver, Duration.ofSeconds(20));
   }
 
   @AfterEach
@@ -101,7 +101,7 @@ public class NetworkInterceptionTest {
   @Test
   void addItemReplacingImage() throws IOException {
     String item = "Buy rice";
-    Path path = Paths.get("src/test/resources/sl-holidays-bot-450x200.png");
+    Path path = Paths.get("src/test/resources/cat-and-dog.jpg");
     byte[] sauceBotImage = Files.readAllBytes(path);
     Routable replaceImage = Route
       .matching(req -> req.getUri().contains("unsplash.com"))
