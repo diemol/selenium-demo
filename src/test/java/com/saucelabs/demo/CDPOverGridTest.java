@@ -8,9 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v103.network.Network;
-import org.openqa.selenium.devtools.v103.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v103.network.model.ResourceType;
+import org.openqa.selenium.devtools.v112.network.Network;
+import org.openqa.selenium.devtools.v112.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v112.network.model.ResourceType;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -22,7 +22,7 @@ public class CDPOverGridTest {
 
 	@Test
 	public void blockUrls() throws InterruptedException, MalformedURLException {
-		URL gridUrl = new URL("http://localhost:4444");
+		URL gridUrl = new URL("https://4444-pinhol-dynamicgrid-u8l2onz42yb.ws-eu95.gitpod.io");
 		ChromeOptions options = new ChromeOptions();
 		options.setCapability("se:recordVideo", true);
 		options.setCapability("se:timeZone", "US/Pacific");
