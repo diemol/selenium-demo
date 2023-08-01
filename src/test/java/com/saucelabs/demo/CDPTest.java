@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v112.network.Network;
-import org.openqa.selenium.devtools.v112.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v112.network.model.Headers;
-import org.openqa.selenium.devtools.v112.network.model.ResourceType;
+import org.openqa.selenium.devtools.v115.network.Network;
+import org.openqa.selenium.devtools.v115.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v115.network.model.Headers;
+import org.openqa.selenium.devtools.v115.network.model.ResourceType;
 
 import java.io.File;
 import java.io.IOException;
