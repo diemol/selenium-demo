@@ -36,7 +36,7 @@ public class ScaleUpTest {
     for (int i = 0; i < futures.length; i++) {
       CompletableFuture<Object> future = new CompletableFuture<>();
       futures[i] = future;
-      Capabilities capabilities = i % 2 == 0 ? new ChromeOptions().setHeadless(true) : new FirefoxOptions().setHeadless(true);
+      Capabilities capabilities = i % 2 == 0 ? new ChromeOptions().addArguments("--headless") : new FirefoxOptions().addArguments("-headless");
       executor.submit(() -> {
         try {
           WebDriver driver = RemoteWebDriver.builder()

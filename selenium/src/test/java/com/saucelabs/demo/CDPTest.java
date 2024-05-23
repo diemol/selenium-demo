@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v115.network.Network;
-import org.openqa.selenium.devtools.v115.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v115.network.model.Headers;
-import org.openqa.selenium.devtools.v115.network.model.ResourceType;
+import org.openqa.selenium.devtools.v125.network.Network;
+import org.openqa.selenium.devtools.v125.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v125.network.model.Headers;
+import org.openqa.selenium.devtools.v125.network.model.ResourceType;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,13 +50,13 @@ public class CDPTest {
 			}
 		});
 
-		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+		chromeDriver.get("https://www.diemol.com/selenium-demo/relative-locators-demo.html");
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(5000);
 
 		// Disabling network interception and reloading the site
 		devTools.send(Network.disable());
-		chromeDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+		chromeDriver.get("https://www.diemol.com/selenium-demo/relative-locators-demo.html");
 		// Thread.sleep only meant for demo purposes!
 		Thread.sleep(5000);
 	}

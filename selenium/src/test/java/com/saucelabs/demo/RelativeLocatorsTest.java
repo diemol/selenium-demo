@@ -62,7 +62,7 @@ public class RelativeLocatorsTest {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
 //		driver.manage().window().maximize();
-		driver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+		driver.get("https://www.diemol.com/selenium-demo/relative-locators-demo.html");
 
 		// Sleep only meant for demo purposes!
 		sleepTight(5000);

@@ -8,9 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v115.network.Network;
-import org.openqa.selenium.devtools.v115.network.model.BlockedReason;
-import org.openqa.selenium.devtools.v115.network.model.ResourceType;
+import org.openqa.selenium.devtools.v125.network.Network;
+import org.openqa.selenium.devtools.v125.network.model.BlockedReason;
+import org.openqa.selenium.devtools.v125.network.model.ResourceType;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -47,13 +47,13 @@ public class CDPOverGridTest {
 				}
 			});
 
-			webDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+			webDriver.get("https://www.diemol.com/selenium-demo/relative-locators-demo.html");
 			// Thread.sleep only meant for demo purposes!
 			Thread.sleep(5000);
 
 			// Disabling network interception and reloading the site
 			devTools.send(Network.disable());
-			webDriver.get("https://www.diemol.com/selenium-4-demo/relative-locators-demo.html");
+			webDriver.get("https://www.diemol.com/selenium-demo/relative-locators-demo.html");
 			// Thread.sleep only meant for demo purposes!
 			Thread.sleep(5000);
 		} finally {
